@@ -5,7 +5,7 @@ import { extQuizRouter } from "./routes/extQuiz.js";
 
 const app = express();
 
-const PORT = Number(process.env.PORT ?? "3001");
+const PORT = Number(process.env.PORT ?? "3002");
 const CORS_ORIGIN = String(process.env.CORS_ORIGIN ?? "http://localhost:5173");
 
 app.use(cors({ origin: CORS_ORIGIN }));

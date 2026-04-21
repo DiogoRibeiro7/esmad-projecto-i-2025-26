@@ -79,13 +79,15 @@ aula-3-apis-externas/
 
 ## Passo 1 — Escolher o fornecedor externo
 
-O `quizProvider.ts` vem com um `QUIZ_EXTERNAL_URL` **placeholder** (`https://example.com/api/quiz`). Antes de arrancar, substitui por uma API real. Opções de baixa fricção:
+O `quizProvider.ts` já vem configurado para `https://the-trivia-api.com/api/questions`, com mapeamento funcional para o contrato interno desta aula.
+
+Se quiseres trocar de fornecedor, opções de baixa fricção:
 
 - [Open Trivia DB](https://opentdb.com/) — `https://opentdb.com/api.php?amount=1&category=9&difficulty=easy`
 - [QuizAPI.io](https://quizapi.io/) — requer chave
 - Qualquer outra API pública de quiz
 
-Ao trocar o URL, **também** precisas de ajustar o mapeamento no provider (a estrutura de cada fornecedor é diferente). Procura os dois blocos `// TODO:` em `src/providers/quizProvider.ts`.
+Ao trocar o URL, **também** precisas de ajustar o mapeamento no provider (a estrutura de cada fornecedor é diferente).
 
 ---
 
@@ -98,15 +100,15 @@ yarn install
 yarn dev
 ```
 
-Deves ver `Backend up on http://localhost:3001`.
+Deves ver `Backend up on http://localhost:3002`.
 
 **Smoke test:**
 
 ```bash
-curl -s "http://localhost:3001/api/ext/quiz/question?category=general&difficulty=easy"
+curl -s "http://localhost:3002/api/ext/quiz/question?category=general&difficulty=easy"
 ```
 
-Se devolver `502` ou `504`, provavelmente o `QUIZ_EXTERNAL_URL` ainda é o placeholder ou o mapeamento não corresponde à resposta real.
+Se devolver `502` ou `504`, normalmente há erro de rede, fornecedor indisponível, rate limit, ou mapeamento incompatível com o formato devolvido.
 
 ---
 
@@ -136,10 +138,10 @@ Abre http://localhost:5173.
 
 ```bash
 # pedido valido
-curl -s "http://localhost:3001/api/ext/quiz/question?category=general&difficulty=easy" | head
+curl -s "http://localhost:3002/api/ext/quiz/question?category=general&difficulty=easy" | head
 
 # input invalido (400)
-curl -i "http://localhost:3001/api/ext/quiz/question?category=&difficulty=easy"
+curl -i "http://localhost:3002/api/ext/quiz/question?category=&difficulty=easy"
 ```
 
 ---
@@ -167,7 +169,7 @@ O ficheiro `.env` **nunca** é commitado. Está no `.gitignore`.
 
 | Sintoma | Causa provável |
 |---------|----------------|
-| Sempre `502` | `QUIZ_EXTERNAL_URL` ainda é o placeholder ou mapeamento não corresponde à resposta |
+| Sempre `502` | API externa indisponível, bloqueada, ou mapeamento incompatível com a resposta |
 | Sempre `504` | Timeout baixo demais (default 3500 ms) ou rede instável |
 | UI não mostra nada | `CORS_ORIGIN` no `.env` não coincide com o URL do front-end |
 | `429` do fornecedor | Rate limit — activar caching (ver `src/utils/cache.ts`) |
