@@ -16,15 +16,31 @@ Cada aula vive na sua pasta e é independente das restantes — podes abrir só 
 
 Para as aulas 2 e 3:
 
-- [Node.js](https://nodejs.org/) 20 ou superior (inclui `npm`)
+- [Node.js](https://nodejs.org/) 20 ou superior
+- [Corepack](https://nodejs.org/api/corepack.html) activo para gerir `yarn`
 - Um editor de código (VS Code é suficiente)
 - Um cliente HTTP para testes rápidos — `curl` é o usado nos exemplos
 - Para a aula 2, [Docker](https://www.docker.com/) ou MongoDB local (ver README da aula)
+- Opcional: Python 3 para servir o front-end com `python -m http.server`
 
 Para a aula 1:
 
 - `git` instalado e configurado (`git config --global user.name` e `user.email`)
 - Conta GitHub
+
+## Setup rápido (do zero)
+
+```bash
+# 1) confirmar versões
+node -v
+npm -v
+
+# 2) activar yarn via corepack
+corepack enable
+yarn -v
+```
+
+Se `yarn -v` falhar, actualiza o Node.js para uma versão LTS recente (20+).
 
 ## Como abrir cada aula
 

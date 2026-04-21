@@ -53,9 +53,18 @@ Resposta normalizada (sempre neste formato):
 ## Pré-requisitos
 
 - Node.js 20+
-- `npm`
+- Corepack + Yarn (`corepack enable` e `yarn --version`)
 - `curl` para os smoke tests
 - Acesso à Internet (o provider chama um serviço externo)
+- Opcional: Python 3 para servir `frontend/` com `python -m http.server`
+
+### Verificação rápida do ambiente
+
+```bash
+node -v
+yarn -v
+python --version
+```
 
 ## Estrutura
 
@@ -98,6 +107,12 @@ cd backend
 cp .env.example .env
 yarn install
 yarn dev
+```
+
+PowerShell (equivalente para copiar o `.env`):
+
+```powershell
+Copy-Item .env.example .env
 ```
 
 Deves ver `Backend up on http://localhost:3002`.

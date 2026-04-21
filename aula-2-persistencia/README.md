@@ -34,10 +34,20 @@ Esta pergunta evita muitos erros de arquitectura. Preferências visuais e rascun
 ## Pré-requisitos
 
 - Node.js 20+ (`node --version`)
-- `npm` (`npm --version`)
+- Corepack + Yarn (`corepack enable` e `yarn --version`)
 - Uma das duas:
   - [Docker](https://www.docker.com/) — recomendado, zero setup adicional
   - [MongoDB Community Server](https://www.mongodb.com/try/download/community) local
+- Opcional: Python 3 para servir `frontend/` com `python -m http.server`
+
+### Verificação rápida do ambiente
+
+```bash
+node -v
+yarn -v
+docker --version
+python --version
+```
 
 ## Estrutura
 
@@ -89,6 +99,12 @@ cd backend
 cp .env.example .env
 yarn install
 yarn dev
+```
+
+PowerShell (equivalente para copiar o `.env`):
+
+```powershell
+Copy-Item .env.example .env
 ```
 
 Na consola deve aparecer `Backend up on http://localhost:3001`.
