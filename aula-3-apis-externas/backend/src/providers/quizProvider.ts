@@ -19,12 +19,11 @@ export async function fetchQuizQuestion(params: {
 }): Promise<QuizFetchResult> {
   const { category, difficulty, apiKey, timeoutMs = 3500 } = params;
 
-  // TODO: substituir por URL real do fornecedor escolhido
-  const QUIZ_EXTERNAL_URL = "https://example.com/api/quiz";
+  const QUIZ_EXTERNAL_URL = "https://the-trivia-api.com/api/questions";
 
   const url =
     `${QUIZ_EXTERNAL_URL}?` +
-    `category=${encodeURIComponent(category)}` +
+    `categories=${encodeURIComponent(category)}` +
     `&difficulty=${encodeURIComponent(difficulty)}` +
     `&limit=1`;
 
@@ -51,19 +50,14 @@ export async function fetchQuizQuestion(params: {
     }
 
     const raw = await r.json();
-
-    // TODO: adaptar o mapping conforme a resposta real do fornecedor.
-    // Exemplo para Open Trivia DB:
-    //   const item = raw?.results?.[0];
-    //   const question = String(item?.question ?? "");
-    //   const answers = [...(item?.incorrect_answers ?? []), item?.correct_answer].filter(Boolean);
-    //   const correctAnswer = item?.correct_answer;
     const item = Array.isArray(raw) ? raw[0] : raw;
 
     const question = String(item?.question ?? "").trim();
-    const answers = Array.isArray(item?.answers) ? item.answers.map(String) : [];
-    const correctAnswer =
-      typeof item?.correctAnswer === "string" ? item.correctAnswer : undefined;
+    const correctAnswer = typeof item?.correctAnswer === "string" ? item.correctAnswer : undefined;
+    const incorrectAnswers = Array.isArray(item?.incorrectAnswers)
+      ? item.incorrectAnswers.map(String).filter(Boolean)
+      : [];
+    const answers = [correctAnswer, ...incorrectAnswers].filter(Boolean);
 
     if (!question || answers.length === 0) {
       const err = new Error("BAD_UPSTREAM_SHAPE");

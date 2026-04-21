@@ -87,8 +87,8 @@ Em alternativa, inicia o `mongod` que já tens instalado na tua máquina.
 ```bash
 cd backend
 cp .env.example .env
-npm install
-npm run dev
+yarn install
+yarn dev
 ```
 
 Na consola deve aparecer `Backend up on http://localhost:3001`.

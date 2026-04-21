@@ -94,8 +94,8 @@ Ao trocar o URL, **também** precisas de ajustar o mapeamento no provider (a est
 ```bash
 cd backend
 cp .env.example .env
-npm install
-npm run dev
+yarn install
+yarn dev
 ```
 
 Deves ver `Backend up on http://localhost:3001`.
