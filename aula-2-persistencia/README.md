@@ -38,7 +38,10 @@ Esta pergunta evita muitos erros de arquitectura. Preferências visuais e rascun
 - Uma das duas:
   - [Docker](https://www.docker.com/) — recomendado, zero setup adicional
   - [MongoDB Community Server](https://www.mongodb.com/try/download/community) local
-- Opcional: Python 3 para servir `frontend/` com `python -m http.server`
+- Um servidor estático qualquer para servir a pasta `frontend/` (o front-end é HTML + JavaScript puro — só precisa de ser servido por HTTP, não precisa de *build*). Opções equivalentes:
+  - `python -m http.server` (Python 3 já costuma estar instalado — é só o mais prático, não tem nada a ver com a linguagem do front-end)
+  - `npx serve` ou `npx http-server` (Node.js)
+  - Extensão [Live Server](https://marketplace.visualstudio.com/items?itemName=ritwickdey.LiveServer) no VS Code
 
 ### Verificação rápida do ambiente
 
@@ -46,7 +49,7 @@ Esta pergunta evita muitos erros de arquitectura. Preferências visuais e rascun
 node -v
 yarn -v
 docker --version
-python --version
+python --version   # opcional — só se fores usar o Python como servidor estático no Passo 3
 ```
 
 ## Estrutura
@@ -120,14 +123,21 @@ curl -s http://localhost:3001/health
 
 ## Passo 3 — Front-end
 
-Num terminal separado:
+> **O front-end é HTML + JavaScript puro** ([`index.html`](frontend/index.html) + [`app.js`](frontend/app.js)) — não há Python nem qualquer *build step*. O que precisas é só de um servidor HTTP para servir estes ficheiros estáticos ao browser (abrir o `index.html` com `file://` parte o `fetch` por questões de origem).
+
+Num terminal separado, escolhe **uma** das opções abaixo (são equivalentes — serve-se a mesma pasta do mesmo modo):
 
 ```bash
 cd frontend
-python -m http.server 5173
-```
 
-Ou usa qualquer servidor estático (`npx serve`, extensão Live Server no VS Code, etc.).
+# Opção A — Python 3 (está quase sempre instalado, por isso aparece primeiro nos exemplos)
+python -m http.server 5173
+
+# Opção B — Node.js, sem instalar nada permanente
+npx serve -l 5173 .
+
+# Opção C — VS Code: abrir o index.html e clicar "Go Live" (extensão Live Server)
+```
 
 Abre http://localhost:5173 no browser.
 
