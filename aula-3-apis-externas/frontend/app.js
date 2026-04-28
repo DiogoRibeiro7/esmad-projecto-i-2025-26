@@ -1,5 +1,14 @@
 "use strict";
 
+/**
+ * Script principal do frontend da Aula 3.
+ *
+ * Responsabilidades:
+ * - ler input do utilizador;
+ * - chamar o endpoint interno `/api/ext/quiz/question`;
+ * - renderizar pergunta, respostas e feedback;
+ * - apresentar mensagens de erro de forma amigável.
+ */
 const API_BASE = "http://localhost:3002/api";
 
 const categoryEl = document.getElementById("category");
@@ -8,15 +17,35 @@ const askBtn = document.getElementById("ask");
 const statusEl = document.getElementById("status");
 const questionArea = document.getElementById("question-area");
 
+/**
+ * Escreve mensagem de estado no ecrã.
+ *
+ * @param text Texto de feedback para o utilizador.
+ * @param isError Quando `true`, aplica classe visual de erro.
+ * @returns Nada (`void`).
+ */
 function setStatus(text, isError) {
   statusEl.textContent = text || "";
   statusEl.className = isError ? "error" : "muted";
 }
 
+/**
+ * Limpa a área da pergunta antes de novo render.
+ *
+ * @returns Nada (`void`).
+ */
 function clearQuestion() {
   questionArea.innerHTML = "";
 }
 
+/**
+ * Faz pedido ao backend (gateway interno), não diretamente à API externa.
+ *
+ * @param category Categoria escolhida.
+ * @param difficulty Dificuldade escolhida.
+ * @throws Error com mensagem user-friendly quando HTTP não é 2xx.
+ * @returns Payload JSON normalizado pelo backend.
+ */
 async function fetchQuestion(category, difficulty) {
   const url = `${API_BASE}/ext/quiz/question?category=${encodeURIComponent(category)}&difficulty=${encodeURIComponent(difficulty)}`;
   const res = await fetch(url);
@@ -28,6 +57,12 @@ async function fetchQuestion(category, difficulty) {
   return res.json();
 }
 
+/**
+ * Renderiza pergunta, lista de respostas e metadados.
+ *
+ * @param payload Resposta já normalizada do backend.
+ * @returns Nada (`void`).
+ */
 function renderQuestion(payload) {
   clearQuestion();
 
@@ -69,6 +104,16 @@ function renderQuestion(payload) {
   questionArea.appendChild(wrapper);
 }
 
+/**
+ * Handler principal do botão "Nova pergunta".
+ *
+ * Fluxo:
+ * 1) valida input;
+ * 2) bloqueia botão para evitar cliques repetidos;
+ * 3) chama backend;
+ * 4) renderiza output ou erro;
+ * 5) desbloqueia botão no final.
+ */
 askBtn.addEventListener("click", async () => {
   const category = String(categoryEl.value || "").trim();
   const difficulty = String(difficultyEl.value || "").trim();

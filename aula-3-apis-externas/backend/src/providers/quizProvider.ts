@@ -1,3 +1,10 @@
+/**
+ * Tipos e provider para integração com API externa de perguntas de quiz.
+ *
+ * Objetivo do provider:
+ * - isolar detalhes do fornecedor externo;
+ * - converter o formato original para o formato interno da aplicação.
+ */
 export type Difficulty = "easy" | "medium" | "hard";
 
 export interface QuizQuestion {
@@ -11,6 +18,17 @@ export interface QuizFetchResult {
   provider: "quiz";
 }
 
+/**
+ * Obtém uma pergunta de quiz a partir de API externa e normaliza a resposta.
+ *
+ * @param params.category Categoria pedida pelo cliente (ex.: "general").
+ * @param params.difficulty Dificuldade pedida (`easy` | `medium` | `hard`).
+ * @param params.apiKey Chave opcional para APIs que exijam autenticação.
+ * @param params.timeoutMs Timeout da chamada externa em milissegundos (default: 3500).
+ * @throws Error com `code=429` em rate limit.
+ * @throws Error com `code=502` quando upstream falha ou devolve formato inválido.
+ * @returns Objeto normalizado `{ provider, data }` para o router devolver ao frontend.
+ */
 export async function fetchQuizQuestion(params: {
   category: string;
   difficulty: Difficulty;
